@@ -15,7 +15,13 @@ call s:SetGlobalOptDefault('vimpipe_invoke_map', '<LocalLeader>r')
 call s:SetGlobalOptDefault('vimpipe_close_map', '<LocalLeader>p')
 call s:SetGlobalOptDefault('vimpipe_silent', 0)
 
-function! VimPipe() range "{{{1
+function! VimPipe() "{{{1
+	let l:winview = winsaveview()
+	%call s:DoVimPipe()
+	call winrestview(l:winview)
+endfunction
+
+function! s:DoVimPipe() range "{{{1
 	" Save local settings.
 	let saved_unnamed_register = @@
 	let switchbuf_before = &switchbuf
@@ -112,6 +118,6 @@ function! VimPipe() range "{{{1
 endfunction
 
 " Define Mappings {{{1
-execute "nnoremap <silent> " . g:vimpipe_invoke_map . " :%call VimPipe()<CR>"
+execute "nnoremap <silent> " . g:vimpipe_invoke_map . " :call VimPipe()<CR>"
 " Modeline {{{1
 " vim: set foldlevel=1 foldmethod=marker:
